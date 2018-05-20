@@ -17,7 +17,9 @@ class sopaLetra{
 		char generadorLetraA();
 		vector<string> randPal(vector<string> textos);
 		string devuelvePal(string palabra);
+		vector<string> repetidas(vector<string> textos);
 };
+  			/*CONSTRUCTOR*/
 
 sopaLetra::sopaLetra(int _numFil, int _numCol){
 	numFil = _numFil;
@@ -36,7 +38,9 @@ vector<vector<char> > sopaLetra::generarMtz(vector<string> textos){
 	for(int i = 0; i < numFil; i++){
 		cout << endl;
 		for(int j = 0; j < numCol; j++){
-			cout << mtz[i][j] << " ";
+			if(mtz[i][j] == NULL)
+				mtz[i][j] = rand()%'A'+'Z';
+			cout << "|"<<mtz[i][j] << "|"<<' ';
 		}
 	}
 	cout << endl;
@@ -53,6 +57,7 @@ vector<string> sopaLetra::randPal(vector<string> textos){
 	}
 		for(int i = 0; i < tam; i++){
 			int al = rand() % tam;
+
 			if(al == tempo[i]){
 				cout << "hi";
 				tempo.erase(tempo.begin() + i-1);
@@ -79,13 +84,21 @@ string sopaLetra::devuelvePal(string palabra){
 		nuevo.push_back(palabra[i]);
 	}
 	return nuevo;
-}	
+}
+vector<string> sopaLetra::repetidas(std::vector<string> textos){
+	string word;
+	for (int j = 0; j < textos.size(); j++){
+		word = textos[j];
+		for (int i = 1; i < textos.size(); i++){
+			if(word == textos[i])
+				textos.erase(textos.begin() + i);	
+		}
+	}	
+	return textos;
+}
 
 
 int main(){ 
-
-	sopaLetra hola(54, 16);
-
 	ifstream archivo;
 	string text;
 	vector<string> textos;
@@ -105,16 +118,22 @@ int main(){
 				hola.push_back(text[i+=1]);
 			}
 		}
+	
 		textos.push_back(hola);
+		
 	}
+
 		/*for(int i = 0; i < textos.size(); i++){
 			cout << textos[i] << endl;
 		}*/
 	archivo.close();
+	sopaLetra soup(25,16);
 
-	vector<vector<char> > mat = hola.generarMtz(textos);
+	//vector<vector<char> > mtz = //
+	soup.generarMtz(soup.repetidas(textos));
+	
 
-	vector<string> palabras = hola.randPal(textos);
+	vector<string> palabras = soup.randPal(soup.repetidas(textos));
 	/*for(int i = 0; i < palabras.size(); i++){
 		cout << palabras[i] << endl;
 	}*/
